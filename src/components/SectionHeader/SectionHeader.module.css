@@ -1,0 +1,11 @@
+.heading {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 2.5rem auto 1.5rem auto;
+    margin: 2rem auto 0.5rem auto;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #222;
+    opacity: 0.9;
+}
