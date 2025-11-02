@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { TeamMember } from "./TeamPanel";
+import { TeamMember, TeamCategory } from "./TeamPanel";
 
 interface TeamFormProps {
     editItem: TeamMember | null;
@@ -11,10 +11,12 @@ interface TeamFormProps {
     onRefresh: () => void;
 }
 
+const CATEGORY_OPTIONS: TeamCategory[] = ["PI", "grad", "undergrad", "group-photo"];
+
 const TeamForm: React.FC<TeamFormProps> = ({ editItem, onClearEdit, onRefresh }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [category, setCategory] = useState<"PI" | "grad" | "undergrad" | "group-photo">("PI");
+    const [category, setCategory] = useState<TeamCategory>("PI");
     const [office, setOffice] = useState("");
     const [email, setEmail] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -25,13 +27,19 @@ const TeamForm: React.FC<TeamFormProps> = ({ editItem, onClearEdit, onRefresh })
         if (editItem) {
             setName(editItem.name);
             setDescription(editItem.description);
-            setCategory(editItem.category as any);
+            setCategory(editItem.category);
             setOffice(editItem.office || "");
             setEmail(editItem.email || "");
             setImageFile(null);
             if (fileInputRef.current) fileInputRef.current.value = "";
         }
     }, [editItem]);
+
+    const handleCategoryChange = (value: string) => {
+        if (CATEGORY_OPTIONS.includes(value as TeamCategory)) {
+            setCategory(value as TeamCategory);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,7 +71,7 @@ const TeamForm: React.FC<TeamFormProps> = ({ editItem, onClearEdit, onRefresh })
 
         const imageUrl = `/Team/${folderName}${folderName ? "/" : ""}${newName}`;
 
-        const docData: any = {
+        const docData: Omit<TeamMember, "id"> = {
             name,
             description,
             category,
@@ -129,7 +137,7 @@ const TeamForm: React.FC<TeamFormProps> = ({ editItem, onClearEdit, onRefresh })
 
             <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value as any)}
+                onChange={(e) => handleCategoryChange(e.target.value)}
                 className="w-full border px-3 py-2 rounded"
             >
                 <option value="PI">Principal Investigator</option>
