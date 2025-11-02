@@ -6,11 +6,13 @@ import { db } from "@/lib/firebase";
 import TeamForm from "./TeamForm";
 import TeamTable from "./TeamTable";
 
+export type TeamCategory = "PI" | "grad" | "undergrad" | "group-photo";
+
 export interface TeamMember {
     id?: string;
     name: string;
     description: string;
-    category: "PI" | "grad" | "undergrad";
+    category: TeamCategory;
     imageUrl: string;
     office?: string;
     email?: string;
