@@ -1,47 +1,49 @@
 # Venugopal Lab Website
 
-A Next.js App Router site for the Venugopal Lab showcasing current research projects, publications, team members, and resources. The public site is backed by Firebase for data storage, while an authenticated admin area allows content updates.
+This repository contains the Venugopal Lab website built with Next.js and Firebase. The public pages surface research projects, publications, team members, and lab resources, while an admin area lets authorized editors manage the content.
 
-## Prerequisites
+## Requirements
+- Node.js 18 or newer
+- npm 9 or newer
+- A Firebase project with Firestore, Storage, and Email/Password Authentication enabled
 
-- Node.js 18+
-- npm 9+
-- Firebase project with Firestore, Storage, and Auth enabled
-
-## Environment Setup
-
-1. Copy `.env.example` to `.env.local` and supply the Firebase configuration values from your project dashboard.
-2. Install dependencies:
-
+## Setup
+1. Install dependencies:
    ```bash
    npm install
    ```
+2. Copy `.env.example` to `.env.local` and fill in the Firebase configuration values from your project settings.
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   The site runs at [http://localhost:3000](http://localhost:3000).
 
-## Development
+The admin dashboard is available at `/admin` and requires a Firebase-authenticated user account.
 
-Run a local development server with hot reloading:
+## Available Scripts
+- `npm run dev` – start a local development server
+- `npm run build` – create a production build
+- `npm run start` – serve the production build locally
+- `npm run lint` – run ESLint checks
 
-```bash
-npm run dev
+## Deployment
+1. Run the production build locally to ensure it succeeds:
+   ```bash
+   npm run build
+   npm run start
+   ```
+2. Deploy the project to your hosting provider (Vercel is recommended for Next.js).
+3. Configure the same Firebase environment variables in your hosting environment.
+4. Review your Firebase Security Rules so only trusted users can modify data.
+
+## Project Structure
 ```
-
-The site will be available at [http://localhost:3000](http://localhost:3000).
-
-## Quality Checks
-
-Before committing, run linting to ensure code quality:
-
-```bash
-npm run lint
+src/
+├─ app/          # App Router pages, layouts, and API routes
+├─ components/   # Shared UI and admin components
+├─ lib/          # Firebase initialization and helpers
+└─ styles/       # Global styles
+public/
+└─ assets used across the site
 ```
-
-## Production Build
-
-Create an optimized production build and start the server locally:
-
-```bash
-npm run build
-npm run start
-```
-
-Deploy the contents of the `.next` build output using your preferred hosting provider (e.g., Vercel). Ensure the Firebase environment variables are configured in your hosting environment prior to deployment.
