@@ -1,25 +1,26 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, FirebaseOptions } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAemXZ3m--sPkMuM89xqEas1HqXSkH1m8E",
-  authDomain: "research-web-5c065.firebaseapp.com",
-  projectId: "research-web-5c065",
-  storageBucket: "research-web-5c065.firebasestorage.app",
-  messagingSenderId: "665314002821",
-  appId: "1:665314002821:web:d96e6d4a7273b60691e6ec"
+const requireEnv = (value: string | undefined, key: string): string => {
+  if (!value) {
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+  return value;
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const firebaseConfig: FirebaseOptions = {
+  apiKey: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_API_KEY, "NEXT_PUBLIC_FIREBASE_API_KEY"),
+  authDomain: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"),
+  projectId: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, "NEXT_PUBLIC_FIREBASE_PROJECT_ID"),
+  storageBucket: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID, "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: requireEnv(process.env.NEXT_PUBLIC_FIREBASE_APP_ID, "NEXT_PUBLIC_FIREBASE_APP_ID"),
+};
 
-// Firebase services
+const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-export const auth = getAuth(app)
+export const auth = getAuth(app);

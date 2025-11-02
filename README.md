@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Venugopal Lab Website
 
-## Getting Started
+A production-ready Next.js (App Router) site for the Venugopal Lab highlighting research projects, publications, team members, and lab resources. The public site consumes content stored in Firebase, while an authenticated admin dashboard allows designated editors to manage copy and media.
 
-First, run the development server:
+## Features
+- **Dynamic content** sourced from Firestore collections for home, research, publications, and team pages.
+- **Admin dashboard** gated by Firebase Authentication for updating lab content in real time.
+- **Responsive design** built with Tailwind CSS and Radix UI primitives for consistent styling across breakpoints.
+- **SEO-friendly metadata** configured in the global layout for production deployments.
+
+## Tech Stack
+- [Next.js 15](https://nextjs.org/) with the App Router
+- [React 19](https://react.dev/)
+- [Firebase](https://firebase.google.com/) (Auth, Firestore, Storage)
+- [Tailwind CSS](https://tailwindcss.com/) 4 + [Radix UI](https://www.radix-ui.com/)
+- TypeScript
+
+## Prerequisites
+- Node.js 18+
+- npm 9+
+- Firebase project with Firestore, Storage, and Email/Password Auth enabled
+
+## Environment Configuration
+1. Create a Firebase web app and retrieve the configuration from the project settings.
+2. Copy `.env.example` to `.env.local` and populate each value:
+
+   ```ini
+   NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+   ```
+
+   These variables must also be configured in your hosting provider (e.g., Vercel) before deploying the site.
+
+## Local Development
+Install dependencies and start the development server with hot reloading:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin Dashboard
+- Navigate to `/admin` and authenticate with an email/password credential registered in Firebase Auth.
+- Use the section selector to manage Home, Research, Publications, and Team content.
+- When adding research projects or team members, upload corresponding images to the `public` directory following the sanitized filenames shown in the form.
+- Publication entries support direct URLs or auto-generated PubMed links when a PMID is provided.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Quality Checks
+Run linting before committing to ensure code quality:
 
-## Learn More
+```bash
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Production Build & Deployment
+Create an optimized build and verify it locally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To deploy:
+- Push the repository to your preferred hosting provider (Vercel recommended for Next.js).
+- Configure the Firebase environment variables in the hosting environment.
+- Ensure your Firebase Security Rules restrict read/write access appropriately for public and admin routes.
 
-## Deploy on Vercel
+## Project Structure
+```
+src/
+├─ app/              # App Router pages, layouts, and API routes
+├─ components/       # Shared UI and admin components
+├─ lib/              # Firebase initialization and shared utilities
+└─ styles/           # Global styles
+public/
+└─ Hero/, team/, ... # Static assets referenced by Firestore documents
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
+1. Fork the repository and create a feature branch.
+2. Make your changes, add tests or lint checks where applicable.
+3. Submit a pull request with a clear description of the updates and testing performed.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
